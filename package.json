@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "fingerprint-browser": "^1.0.5",
+    "@thumbmarkjs/thumbmarkjs": "^0.14.8",
     "mongodb": "^6.8.0",
     "next": "14.2.4",
     "react": "^18.3.1",

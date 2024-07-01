@@ -8,9 +8,9 @@ importers:
 
   .:
     dependencies:
-      fingerprint-browser:
-        specifier: ^1.0.5
-        version: 1.0.5
+      '@thumbmarkjs/thumbmarkjs':
+        specifier: ^0.14.8
+        version: 0.14.8
       mongodb:
         specifier: ^6.8.0
         version: 6.8.0
@@ -204,6 +204,9 @@ packages:
 
   '@swc/helpers@0.5.5':
     resolution: {integrity: sha512-KGYxvIOXcceOAbEk4bi/dVLEK9z8sZ0uBB3Il5b1rhfClSpcX0yfRO0KmTkqR2cnQDymwLB+25ZyMzICg/cm/A==}
+
+  '@thumbmarkjs/thumbmarkjs@0.14.8':
+    resolution: {integrity: sha512-J+/HnYBv24ufFCoyqbFhtZk1zTGKWzHfyN15sc6kJq/1D/6H1oaKt+W1yWxkUwzclMS1n36EaoHbNjFeiuDqDg==}
 
   '@types/json5@0.0.29':
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
@@ -698,9 +701,6 @@ packages:
   find-up@5.0.0:
     resolution: {integrity: sha512-78/PXT1wlLLDgTzDs7sjq9hzz0vXD+zn+7wypEe4fXQxCmdmqfGsEPQxmiCSQI3ajFV91bVSsvNtrJRiW6nGng==}
     engines: {node: '>=10'}
-
-  fingerprint-browser@1.0.5:
-    resolution: {integrity: sha512-ApDesm+4RKXVwiqBVXuLGnkT8PLrsHKWIjjZ4J6/W7UyKNKMb8t08VbRpmn4Yjpgl2nARAimXLdCLtDDzV0ZFg==}
 
   flat-cache@3.2.0:
     resolution: {integrity: sha512-CYcENa+FtcUKLmhhqyctpclsq7QF38pKjZHsGNiSQF5r4FtoKDWabFDl3hzaEQMvT1LHEysw5twgLvpYYb4vbw==}
@@ -1769,6 +1769,8 @@ snapshots:
       '@swc/counter': 0.1.3
       tslib: 2.6.3
 
+  '@thumbmarkjs/thumbmarkjs@0.14.8': {}
+
   '@types/json5@0.0.29': {}
 
   '@types/node@20.14.9':
@@ -2476,8 +2478,6 @@ snapshots:
     dependencies:
       locate-path: 6.0.0
       path-exists: 4.0.0
-
-  fingerprint-browser@1.0.5: {}
 
   flat-cache@3.2.0:
     dependencies:

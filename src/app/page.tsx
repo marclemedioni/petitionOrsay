@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 export default function Home() {
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto pt-16 sm:pt-24">
         <h1 className="text-2xl sm:text-4xl font-bold mb-4 sm:mb-8">
           Petition en faveur de la pérénisation de l&apos;expérimentation rue de Verdun
         </h1>
@@ -16,11 +16,11 @@ export default function Home() {
 
         <p className="mb-2 sm:mb-4">
           <Image
-            src="https://picsum.photos/id/237/500/300"
-            width="500"
-            height="300"
+            src="https://picsum.photos/id/237/800/600"
+            width="800"
+            height="600"
             alt="An image"
-            className="w-full sm:w-auto"
+            className="w-full sm:w-auto mx-auto"
           />
         </p>
 

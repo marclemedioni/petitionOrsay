@@ -3,9 +3,7 @@
 import { useRouter } from 'next/navigation'
 
 import { FormEvent, useEffect, useState, } from 'react'
-import {
-  getBrowserFingerprint,
-} from "fingerprint-browser";
+import { getFingerprint } from '@thumbmarkjs/thumbmarkjs'
 
 interface SignForm {
   name: string
@@ -13,16 +11,25 @@ interface SignForm {
   comment: string
 }
 
+interface SignedStatus {
+  hasSigned: boolean | null;
+  signedAt: string | null;
+}
+
 function Form() {
   const [formState, setFormState] = useState({ name: "", email: "", comment: "", fingerprint: "" });
   const [browserFingerprint, setBrowserFingerprint] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
-
+  const [isLoading, setIsLoading] = useState({});
 
   useEffect(() => {
-    setBrowserFingerprint(getBrowserFingerprint(true));
+    async function fetchData() {
+      const fp = await getFingerprint();
+      setBrowserFingerprint(fp as string);
+    }
+
+    fetchData()
   }, []);
-  const [hasAlreadySigned, setHasAlreadySigned] = useState(false);
+  const [hasAlreadySigned, setHasAlreadySigned] = useState<SignedStatus>({ hasSigned: null, signedAt: null });
 
   useEffect(() => {
     async function checkIfSigned() {
@@ -30,7 +37,7 @@ function Form() {
         const response = await fetch(`/api/finger-print?fingerprint=${browserFingerprint}`);
         if (response.ok) {
           const data = await response.json();
-          setHasAlreadySigned(data.hasSigned);
+          setHasAlreadySigned(data);
         }
         setIsLoading(false);
       }
@@ -66,9 +73,11 @@ function Form() {
   }
 
   return (
-<div className="sm:rounded-lg p-8 border border-gray-300 bg-gradient-to-r from-blue-500 to-purple-600 shadow-2xl">
-  {hasAlreadySigned ? (
-    <p className="text-green-600 text-lg font-semibold">✅ Merci d&apos;avoir signé !</p>
+<div className="sm:rounded-lg p-8 border border-gray-300 bg-gradient-to-r from-blue-500 to-purple-600">
+  {hasAlreadySigned.hasSigned ? (
+    <p className="text-black bg-yellow-400 text-lg font-semibold p-2 rounded shadow-lg shadow-black-500/50">
+      ☑️ Vous avez signé la pétition le {hasAlreadySigned.signedAt ? `${new Date(hasAlreadySigned.signedAt).toLocaleDateString('fr-FR')} à ${new Date(hasAlreadySigned.signedAt).toLocaleTimeString('fr-FR')}` : 'N/A'}, merci beaucoup !
+    </p>
   ) : (
     <form onSubmit={onSubmit} className="space-y-6">
       <label className="block">
@@ -109,13 +118,13 @@ function Form() {
         <button
           type="submit"
           className="
-            w-full h-14 sm:h-12 px-6 text-white
-            bg-green-600
-            border border-green-600
+            w-full h-14 sm:h-12 px-6 text-black
+            bg-yellow-400
+            border border-yellow-400
             rounded-lg
-            hover:bg-green-600
-            active:bg-green-700
-            focus:outline-none focus:ring-2 focus:ring-green-300
+            hover:bg-yellow-500
+            active:bg-yellow-600
+            focus:outline-none focus:ring-2 focus:ring-yellow-300
             font-bold text-lg
             shadow-lg shadow-black-500/50 transform active:scale-95 transition-transform
             cursor-pointer

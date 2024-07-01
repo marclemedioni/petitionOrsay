@@ -5,7 +5,7 @@ import { ApiResponse } from '../response';
 export async function POST(req: NextRequest) {
   try {
     const client = await clientPromise;
-    const db = client.db();
+    const db = client.db('petition');
     const body = await req.json();
 
     const { name, email, comment, fingerprint } = body;
@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
       return ApiResponse.badRequest('You have already signed the petition.');
     }
 
-    const result = await db.collection('signatures').insertOne({ name, email, comment, fingerprint });
+    const result = await db.collection('signatures').insertOne({ fingerprint, signedAt: new Date() });
 
     if (result.acknowledged) {
       return ApiResponse.ok({ message: 'Thank you for signing the petition!' });

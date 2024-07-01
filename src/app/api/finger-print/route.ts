@@ -11,12 +11,10 @@ export async function GET(req: NextRequest) {
     }
 
     const client = await clientPromise;
-    const db = client.db();
+    const db = client.db('petition');
     const collection = db.collection('signatures');
 
     const signature = await collection.findOne({ fingerprint });
 
-    const hasSigned = !!signature;
-
-    return ApiResponse.ok({ hasSigned });
+    return ApiResponse.ok({ hasSigned: !!signature, signedAt: signature?.signedAt });
 }
