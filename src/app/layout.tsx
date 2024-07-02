@@ -22,11 +22,11 @@ export default function RootLayout({
           </header>
           <main className="flex-1 overflow-y-auto p-4">
             {children}
+            <SpeedInsights />
+            <Analytics />
           </main>
         </div>
       </body>
-      <SpeedInsights />
-      <Analytics />
     </html>
   )
 }
