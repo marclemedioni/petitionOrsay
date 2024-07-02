@@ -1,7 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import clientPromise from '@/utils/mongodb';
 import { ApiResponse } from '../response';
+import mailjet from 'node-mailjet';
 
+const mailjetClient = new mailjet({
+  apiKey: process.env.MJ_APIKEY_PUBLIC,
+  apiSecret: process.env.MJ_APIKEY_PRIVATE,
+});
 export async function POST(req: NextRequest) {
   try {
     const client = await clientPromise;
@@ -9,8 +14,6 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
 
     const { name, email, comment, fingerprint } = body;
-
-    console.log(name, email, comment, fingerprint)
 
     if (!name || !email || !fingerprint) {
       return ApiResponse.badRequest('Name, email, and fingerprint are required.');
@@ -25,6 +28,29 @@ export async function POST(req: NextRequest) {
     const result = await db.collection('signatures').insertOne({ fingerprint, signedAt: new Date() });
 
     if (result.acknowledged) {
+      // Send email using Mailjet
+      const request = mailjetClient.post("send", { 'version': 'v3.1' }).request({
+        "Messages": [
+          {
+            "From": {
+              "Email": process.env.SEND_TO_MAIL,
+              "Name": "Petition"
+            },
+            "To": [
+              {
+                "Email": process.env.SEND_TO_MAIL,
+                "Name": "Recipient"
+              }
+            ],
+            "Subject": "Pétition: nouvelle signature",
+            "TextPart": `${name}; ${email};${comment};${new Date()}`,
+            "HTMLPart": `<h3>La pétition à été signée par ${name} (${email}).</h3><p>Comment: ${comment}</p><p>${name}; ${email};${comment};${new Date()}</p>`
+          }
+        ]
+      });
+
+      const emailResponse = await request;
+
       return ApiResponse.ok({ message: 'Thank you for signing the petition!' });
     } else {
       return ApiResponse.badRequest('Failed to sign the petition.');
